@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ArcaIt</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="estado_conexion">Conexión</string>
+    <string name="tethering">Tethering</string>
+    <string name="activa">Activa</string>
+    <string name="desconectada">Desconectada</string>
+    <string name="datos_recibidos">Datos recibidos</string>
+    <string name="datos_totales">Datos totales</string>
+    <string name="cnt_vacio">--</string>
+    <string name="historial_navegacion">Historial de navegación</string>
+    <string name="latitud">Latitud</string>
+    <string name="longitud">Longitud</string>
+    <string name="altura">Altura</string>
+    <string name="transferencia_datos">Transferencia de datos</string>
+    <string name="posicion_actual">Posición actual</string>
+
+</resources>
