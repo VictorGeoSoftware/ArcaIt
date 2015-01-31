@@ -13,6 +13,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -27,8 +28,14 @@ import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.apache.http.HttpHost;
+import org.apache.http.conn.params.ConnRoutePNames;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.text.DecimalFormat;
 
 
@@ -92,7 +99,7 @@ public class MainActivity extends ActionBarActivity{
         }
 
 
-        //----- Controlo WIFI y enciendo Tethering
+        //----- Apago WIFI
         txtEstadoTethering.setTextColor(Color.RED);
         txtEstadoTethering.setText(getString(R.string.desconectada));
         WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
@@ -101,6 +108,8 @@ public class MainActivity extends ActionBarActivity{
             wifi.setWifiEnabled(false);
         }
 
+
+        //----- Enciendo Tethering
         Method[] wmMethods = wifi.getClass().getDeclaredMethods();
 
         for(Method method: wmMethods){
@@ -110,7 +119,6 @@ public class MainActivity extends ActionBarActivity{
                     txtEstadoTethering.setTextColor(Color.GREEN);
                     txtEstadoTethering.setText(getString(R.string.activa));
                 }catch (Exception e){
-                    Log.i("", "---------------- ERROR BUCLE 2 ----------------");
                     e.printStackTrace();
                 }
 
@@ -118,6 +126,9 @@ public class MainActivity extends ActionBarActivity{
             }
         }
 
+
+        //----- Configuro proxy
+        new SetProxyTask().execute();
 
         //----- Historial de navegación --> Solo funciona para el historial del propio telefono
 //        String[] proj = new String[] {Browser.BookmarkColumns.TITLE, Browser.BookmarkColumns.URL};
@@ -211,4 +222,18 @@ public class MainActivity extends ActionBarActivity{
 
         }
     }
+
+    public class SetProxyTask extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            DefaultHttpClient httpclient = new DefaultHttpClient();
+
+            HttpHost proxy = new HttpHost("192.168.0.1", 8080);
+            httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+            return null;
+        }
+    }
+
+
 }
